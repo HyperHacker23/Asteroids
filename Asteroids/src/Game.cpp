@@ -128,8 +128,10 @@ static void RenderBG(const Rectangle& viewRect, const Texture2D& texture)
 		floor(viewRect.y / texture.height) * texture.height
 	};
 
-	for (int x = 0; x < tilesX; x++) {
-		for (int y = 0; y < tilesY; y++) {
+	for (int x = 0; x < tilesX; x++)
+	{
+		for (int y = 0; y < tilesY; y++)
+		{
 			Vector2 position = {
 				startPos.x + x * texture.width,
 				startPos.y + y * texture.height
