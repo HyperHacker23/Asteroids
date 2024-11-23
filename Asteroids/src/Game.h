@@ -17,11 +17,7 @@ private:
 	const uint16_t SCREEN_WIDTH = 1280;
 	const uint16_t SCREEN_HEIGHT = 720;
 
-	Texture2D Background;
-	Texture2D Dust;
-	Texture2D Nebula;
-	Texture2D Stars;
-	Texture2D Planets;
+	Texture2D BackgroundTexture;
 
 	Sprite m_SpaceShip;
 	Sprite m_HeavyRock;
