@@ -75,11 +75,19 @@ void Game::HandleInputs()
 
 void Game::ChaseSpaceShip(Sprite& sprite, float VelocityFactor)
 {
-	float deltaTime = GetFrameTime();
-	Vector2 newPos = sprite.getPos();
+	float deltaTime;
+	deltaTime = GetFrameTime();
+	Vector2 Direction = m_SpaceShip.getPos() - sprite.getPos();
+	float Velocity = m_SpaceShip.getVelocity();
 
-	newPos.x += m_SpaceShip.getPos().x * VelocityFactor * deltaTime;
-	newPos.y += m_SpaceShip.getPos().y * VelocityFactor * deltaTime;
+	if (Vector2Length(Direction) > 0)
+	{
+		Direction = Vector2Normalize(Direction);
+	}
+
+	Vector2 newPos = sprite.getPos();
+	newPos.x += Direction.x * Velocity * VelocityFactor * deltaTime;
+	newPos.y += Direction.y * Velocity * VelocityFactor * deltaTime;
 
 	sprite.setPos(newPos);
 }
