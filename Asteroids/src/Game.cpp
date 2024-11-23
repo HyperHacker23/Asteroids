@@ -21,7 +21,7 @@ Game::~Game()
 
 void Game::GameStartup()
 {
-	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Sneaky Fox");
+	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Sneaky Fox")
 	SetTargetFPS(140);
 
 	BackgroundTexture = LoadTexture("res/background.png");
