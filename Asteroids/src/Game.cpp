@@ -15,7 +15,7 @@ Game::Game()
 
 Game::~Game()
 {
-	
+
 }
 
 void Game::GameStartup()
@@ -44,7 +44,7 @@ void Game::HandleInputs()
 	deltaTime = GetFrameTime();
 
 	Vector2 newPos = m_SpaceShip.getPos();
-	
+
 	float currentRotation = m_SpaceShip.getRotation();
 	float velocity = m_SpaceShip.getVelocity();
 
@@ -97,7 +97,7 @@ void Game::GameUpdate()
 
 	ChaseSpaceShip(m_HeavyRock, 0.6f);
 	ChaseSpaceShip(m_LightRock, 0.8f);
-	
+
 	PlayerCam = { {(float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2}, m_SpaceShip.getPos(), 0.0f, 1.0f };
 }
 
@@ -120,24 +120,17 @@ static Rectangle GetViewRect(Camera2D camera, float ScreenWidth, float ScreenHei
 
 static void RenderBG(const Rectangle& viewRect, const Texture2D& texture)
 {
-	int tilesX = (int)(ceil(viewRect.width / texture.width) + 1);
-	int tilesY = (int)(ceil(viewRect.height / texture.height) + 1);
+	int startX = (int)floor(viewRect.x / texture.width);
+	int startY = (int)floor(viewRect.y / texture.height);
 
-	Vector2 startPos = {
-		floor(viewRect.x / texture.width) * texture.width,
-		floor(viewRect.y / texture.height) * texture.height
-	};
-
-	for (int x = 0; x < tilesX; x++)
+	for (int x = startX; x <= startX + 1; x++)
 	{
-		for (int y = 0; y < tilesY; y++)
+		for (int y = startY; y <= startY + 1; y++)
 		{
-			Vector2 position = {
-				startPos.x + x * texture.width,
-				startPos.y + y * texture.height
-			};
+			int posX = x * texture.width;
+			int posY = y * texture.height;
 
-			DrawTextureV(texture, position, WHITE);
+			DrawTexture(texture, (int)posX, (int)posY, WHITE);
 		}
 	}
 }
