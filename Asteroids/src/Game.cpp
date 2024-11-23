@@ -1,0 +1,155 @@
+#include "Game.h"
+
+#include <raylib.h>
+#include <raymath.h>
+
+Game::Game()
+	:Background{ 0.0f, 0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT },
+	BackgroundTexture{ NULL },
+	m_SpaceShip(100),
+	m_HeavyRock(200),
+	m_LightRock(75),
+	PlayerCam{ {0.0f, 0.0f}, {0.0f,0.0f}, 0.0f, 0.0f }
+{
+
+}
+
+Game::~Game()
+{
+	
+}
+
+void Game::GameStartup()
+{
+	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Sneaky Fox");
+	SetTargetFPS(140);
+
+	BackgroundTexture = LoadTexture("res/background.png");
+
+	m_SpaceShip.setRect(0.0f, 0.0f, 98.0f, 75.0f);
+	m_HeavyRock.setRect(0.0f, 0.0f, 120.0f, 98.0f);
+	m_LightRock.setRect(0.0f, 0.0f, 45.0f, 40.0f);
+
+	m_SpaceShip.setTexture("res/player.png");
+	m_HeavyRock.setTexture("res/heavy.png");
+	m_LightRock.setTexture("res/light.png");
+
+	m_SpaceShip.setPos({ SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f });
+	m_HeavyRock.setPos({ 200.0f, 200.0f });
+	m_LightRock.setPos({ 400.0f, 100.0f });
+}
+
+void Game::HandleInputs()
+{
+	float deltaTime;
+	deltaTime = GetFrameTime();
+
+	Vector2 newPos = m_SpaceShip.getPos();
+	
+	float currentRotation = m_SpaceShip.getRotation();
+	float velocity = m_SpaceShip.getVelocity();
+
+	if (IsKeyDown(KEY_W))
+	{
+		float radians = DEG2RAD * currentRotation;
+		newPos.x += sinf(radians) * velocity * deltaTime;
+		newPos.y -= cosf(radians) * velocity * deltaTime;
+	}
+	if (IsKeyDown(KEY_S))
+	{
+		float radians = DEG2RAD * currentRotation;
+		newPos.x -= sinf(radians) * velocity * deltaTime;
+		newPos.y += cosf(radians) * velocity * deltaTime;
+	}
+	if (IsKeyDown(KEY_A))
+	{
+		m_SpaceShip.setRotation(currentRotation - 5.0f * (velocity / (2 * PI)) * deltaTime);
+	}
+	if (IsKeyDown(KEY_D))
+	{
+		m_SpaceShip.setRotation(currentRotation + 5.0f * (velocity / (2 * PI)) * deltaTime);
+	}
+
+	m_SpaceShip.setPos(newPos);
+}
+
+void Game::ChaseSpaceShip(Sprite& sprite, float VelocityFactor)
+{
+	float deltaTime = GetFrameTime();
+	Vector2 newPos = sprite.getPos();
+
+	newPos.x += m_SpaceShip.getPos().x * VelocityFactor * deltaTime;
+	newPos.y += m_SpaceShip.getPos().y * VelocityFactor * deltaTime;
+
+	sprite.setPos(newPos);
+}
+
+void Game::GameUpdate()
+{
+	HandleInputs();
+
+	ChaseSpaceShip(m_HeavyRock, 0.6f);
+	ChaseSpaceShip(m_LightRock, 0.8f);
+	
+	PlayerCam = { {(float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2}, m_SpaceShip.getPos(), 0.0f, 1.0f };
+}
+
+static void RenderBG(const Sprite& sprite, const Rectangle& rect, const Texture2D& texture)
+{
+	Rectangle dest = {
+		sprite.getPos().x - rect.width / 2,
+		sprite.getPos().y - rect.height / 2,
+		rect.width,
+		rect.height,
+	};
+
+	DrawTexturePro(
+		texture,
+		rect,
+		dest,
+		{ 0.0f, 0.0f },
+		0.0f,
+		WHITE
+	);
+}
+
+void Game::GameRender() const
+{
+	RenderBG(m_SpaceShip, Background, BackgroundTexture);
+	Renderer::RenderSprite(m_HeavyRock);
+	Renderer::RenderSprite(m_LightRock);
+	Renderer::RenderSprite(m_SpaceShip);
+}
+
+void Game::GameShutdown()
+{
+	UnloadTexture(BackgroundTexture);
+	UnloadTexture(m_SpaceShip.getTexture());
+	UnloadTexture(m_HeavyRock.getTexture());
+	UnloadTexture(m_LightRock.getTexture());
+
+	CloseWindow();
+}
+
+void Game::runGame()
+{
+	GameStartup();
+
+	while (WindowShouldClose() == false)
+	{
+		GameUpdate();
+
+		BeginDrawing();
+
+		BeginMode2D(PlayerCam);
+
+		ClearBackground(GRAY);
+		GameRender();
+
+		EndMode2D();
+
+		EndDrawing();
+	}
+
+	GameShutdown();
+}
