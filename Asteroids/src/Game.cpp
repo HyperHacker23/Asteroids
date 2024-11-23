@@ -102,28 +102,50 @@ void Game::GameUpdate()
 	PlayerCam = { {(float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2}, m_SpaceShip.getPos(), 0.0f, 1.0f };
 }
 
-static void RenderBG(const Sprite& sprite, const Rectangle& rect, const Texture2D& texture)
+static const Rectangle& GetViewRect(Camera2D camera, float ScreenWidth, float ScreenHeight)
 {
-	Rectangle dest = {
-		sprite.getPos().x - rect.width / 2,
-		sprite.getPos().y - rect.height / 2,
-		rect.width,
-		rect.height,
+	Rectangle viewRect;
+
+	float viewWidth = ScreenWidth / camera.zoom;
+	float viewHeight = ScreenHeight / camera.zoom;
+
+	Vector2 origin = {
+		camera.target.x - camera.offset.x / camera.zoom - viewWidth / 2,
+		camera.target.y - camera.offset.y / camera.zoom - viewHeight / 2
 	};
 
-	DrawTexturePro(
-		texture,
-		rect,
-		dest,
-		{ 0.0f, 0.0f },
-		0.0f,
-		WHITE
-	);
+	viewRect = { origin.x, origin.y, viewWidth, viewHeight };
+
+	return viewRect;
+}
+
+static void RenderBG(const Rectangle& viewRect, const Texture2D& texture)
+{
+	int tilesX = ceil(viewRect.width / texture.width) + 1;
+	int tilesY = ceil(viewRect.height / texture.height) + 1;
+
+	Vector2 startPos = {
+		floor(viewRect.x / texture.width) * texture.width,
+		floor(viewRect.y / texture.height) * texture.height
+	};
+
+	for (int x = 0; x < tilesX; x++) {
+		for (int y = 0; y < tilesY; y++) {
+			Vector2 position = {
+				startPos.x + x * texture.width,
+				startPos.y + y * texture.height
+			};
+
+			DrawTextureV(texture, position, WHITE);
+		}
+	}
 }
 
 void Game::GameRender() const
 {
-	RenderBG(m_SpaceShip, Background, BackgroundTexture);
+	Rectangle viewRect = GetViewRect(PlayerCam, SCREEN_WIDTH, SCREEN_HEIGHT);
+	RenderBG(viewRect, BackgroundTexture);
+
 	Renderer::RenderSprite(m_HeavyRock);
 	Renderer::RenderSprite(m_LightRock);
 	Renderer::RenderSprite(m_SpaceShip);
