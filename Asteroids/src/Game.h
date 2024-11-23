@@ -17,7 +17,6 @@ private:
 	const uint16_t SCREEN_WIDTH = 1280;
 	const uint16_t SCREEN_HEIGHT = 720;
 
-	Rectangle Background;
 	Texture2D BackgroundTexture;
 
 	Sprite m_SpaceShip;

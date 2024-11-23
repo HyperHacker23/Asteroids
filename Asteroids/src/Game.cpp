@@ -4,8 +4,7 @@
 #include <raymath.h>
 
 Game::Game()
-	:Background{ 0.0f, 0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT },
-	BackgroundTexture{ NULL },
+	:BackgroundTexture{ NULL },
 	m_SpaceShip(100),
 	m_HeavyRock(200),
 	m_LightRock(75),
