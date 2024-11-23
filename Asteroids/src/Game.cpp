@@ -4,8 +4,7 @@
 #include <raymath.h>
 
 Game::Game()
-	:BackgroundTexture{ NULL },
-	m_SpaceShip(100),
+	:m_SpaceShip(100),
 	m_HeavyRock(200),
 	m_LightRock(75),
 	PlayerCam{ {0.0f, 0.0f}, {0.0f,0.0f}, 0.0f, 0.0f }
@@ -23,7 +22,11 @@ void Game::GameStartup()
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Sneaky Fox");
 	SetTargetFPS(140);
 
-	BackgroundTexture = LoadTexture("res/background.png");
+	Background = LoadTexture("res/Background.png");
+	Dust = LoadTexture("res/Dust.png");
+	Nebula = LoadTexture("res/Nebula.png");
+	Stars = LoadTexture("res/Stars.png");
+	Planets = LoadTexture("res/Planets.png");
 
 	m_SpaceShip.setRect(0.0f, 0.0f, 98.0f, 75.0f);
 	m_HeavyRock.setRect(0.0f, 0.0f, 120.0f, 98.0f);
@@ -118,14 +121,14 @@ static const Rectangle& GetViewRect(Camera2D camera, float ScreenWidth, float Sc
 	return viewRect;
 }
 
-static void RenderBG(const Rectangle& viewRect, const Texture2D& texture)
+static void RenderParallaxBG(const Rectangle& viewRect, const Texture2D& texture, float parallaxFactor)
 {
 	int tilesX = ceil(viewRect.width / texture.width) + 1;
 	int tilesY = ceil(viewRect.height / texture.height) + 1;
 
 	Vector2 startPos = {
-		floor(viewRect.x / texture.width) * texture.width,
-		floor(viewRect.y / texture.height) * texture.height
+		floor(viewRect.x * parallaxFactor / texture.width) * texture.width,
+		floor(viewRect.y * parallaxFactor / texture.height) * texture.height
 	};
 
 	for (int x = 0; x < tilesX; x++)
@@ -133,8 +136,8 @@ static void RenderBG(const Rectangle& viewRect, const Texture2D& texture)
 		for (int y = 0; y < tilesY; y++)
 		{
 			Vector2 position = {
-				startPos.x + x * texture.width,
-				startPos.y + y * texture.height
+				startPos.x + x * texture.width - viewRect.x * (1 - parallaxFactor),
+				startPos.y + y * texture.height - viewRect.y * (1 - parallaxFactor)
 			};
 
 			DrawTextureV(texture, position, WHITE);
@@ -145,7 +148,12 @@ static void RenderBG(const Rectangle& viewRect, const Texture2D& texture)
 void Game::GameRender() const
 {
 	Rectangle viewRect = GetViewRect(PlayerCam, SCREEN_WIDTH, SCREEN_HEIGHT);
-	RenderBG(viewRect, BackgroundTexture);
+
+	RenderParallaxBG(viewRect, Background, 0.1f);
+	RenderParallaxBG(viewRect, Dust, 0.6f);
+	RenderParallaxBG(viewRect, Nebula, 0.4f);
+	RenderParallaxBG(viewRect, Stars, 0.2f);
+	RenderParallaxBG(viewRect, Planets, 0.8f);
 
 	Renderer::RenderSprite(m_HeavyRock);
 	Renderer::RenderSprite(m_LightRock);
@@ -154,7 +162,11 @@ void Game::GameRender() const
 
 void Game::GameShutdown()
 {
-	UnloadTexture(BackgroundTexture);
+	UnloadTexture(Background);
+	UnloadTexture(Dust);
+	UnloadTexture(Nebula);
+	UnloadTexture(Stars);
+	UnloadTexture(Planets);
 	UnloadTexture(m_SpaceShip.getTexture());
 	UnloadTexture(m_HeavyRock.getTexture());
 	UnloadTexture(m_LightRock.getTexture());
