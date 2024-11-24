@@ -17,6 +17,7 @@ public:
 	void setRect(float x, float y, float w, float h);
 	void setRotation(float Rotation);
 	void setTexture(const char* path);
+	void setTexture(Texture2D& texture);
 
 	const Vector2& getPos() const;
 	float getVelocity() const;

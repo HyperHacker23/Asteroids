@@ -5,6 +5,7 @@
 
 Game::Game()
 	:BackgroundTexture{ NULL },
+	BulletTexture{ NULL },
 	m_SpaceShip(100),
 	m_HeavyRock(200),
 	m_LightRock(75),
@@ -21,7 +22,7 @@ Game::~Game()
 void Game::GameStartup()
 {
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "The Sneaky Fox");
-	SetTargetFPS(140);
+	SetTargetFPS(60);
 
 	BackgroundTexture = LoadTexture("res/background.png");
 
@@ -51,7 +52,7 @@ void Game::MakeBullets()
 
 	float bulletSpeed = m_SpaceShip.getVelocity() * 2.0f;
 
-	bullet.setTexture("res/laser.png");
+	bullet.setTexture(BulletTexture);
 	bullet.setPos(spaceshipPos + Vector2Scale(bulletDirection, 20.0f));
 	bullet.setRotation(spaceshipRotation);
 
@@ -60,11 +61,9 @@ void Game::MakeBullets()
 
 void Game::HandleInputs()
 {
-	float deltaTime;
-	deltaTime = GetFrameTime();
+	float deltaTime = GetFrameTime();
 
 	Vector2 newPos = m_SpaceShip.getPos();
-
 	float currentRotation = m_SpaceShip.getRotation();
 	float velocity = m_SpaceShip.getVelocity();
 
@@ -88,7 +87,8 @@ void Game::HandleInputs()
 	{
 		m_SpaceShip.setRotation(currentRotation + 5.0f * (velocity / (2 * PI)) * deltaTime);
 	}
-	if (IsKeyDown(KEY_SPACE))
+
+	if (IsKeyPressed(KEY_SPACE))
 	{
 		MakeBullets();
 	}

@@ -19,6 +19,7 @@ private:
 	const uint16_t SCREEN_HEIGHT = 720;
 
 	Texture2D BackgroundTexture;
+	Texture2D BulletTexture;
 
 	Sprite m_SpaceShip;
 	Sprite m_HeavyRock;
