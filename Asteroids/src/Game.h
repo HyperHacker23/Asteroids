@@ -24,8 +24,6 @@ private:
 	Sprite m_HeavyRock;
 	Sprite m_LightRock;
 
-	
-
 	Camera2D PlayerCam;
 
 	void HandleInputs();
