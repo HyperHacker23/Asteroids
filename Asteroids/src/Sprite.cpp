@@ -90,8 +90,8 @@ bool Sprite::isHit(Sprite& sprite)
 	float radius = std::min(this->getRect().width, this->getRect().height) / 2.0f;
 	float otherRadius = std::min(sprite.getRect().width, sprite.getRect().height) / 2.0f;
 
-	Vector2 thisCenter = this->getPos();
-	Vector2 otherCenter = sprite.getPos();
+	Vector2 thisCenter = { this->getPos().x + this->getRect().width / 2.0f, this->getPos().y + this->getRect().height / 2.0f };
+	Vector2 otherCenter = { sprite.getPos().x + sprite.getRect().width / 2.0f, sprite.getPos().y + sprite.getRect().height / 2.0f };
 
 	float distance = Vector2Distance(thisCenter, otherCenter);
 
