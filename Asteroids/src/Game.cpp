@@ -38,6 +38,28 @@ void Game::GameStartup()
 	m_LightRock.setPos({ 400.0f, 100.0f });
 }
 
+void Game::MakeBullets()
+{
+	m_Bullets.emplace_back(1);
+
+	Sprite& bullet = m_Bullets.back();
+
+	Vector2 spaceshipPos = m_SpaceShip.getPos();
+	float spaceshipRotation = m_SpaceShip.getRotation();
+
+	Vector2 bulletDirection = Vector2Rotate({ 0.0f, -1.0f }, spaceshipRotation * DEG2RAD);
+
+	float bulletSpeed = m_SpaceShip.getVelocity() * 2.0f;
+
+	// Set bullet properties
+	bullet.setTexture("res/laser.png");
+	bullet.setPos(spaceshipPos + Vector2Scale(bulletDirection, 20.0f));
+	bullet.setRotation(spaceshipRotation);
+	bullet.setVelocity(bulletSpeed);
+
+	bullet.setRect(0.0f, 0.0f, 13.0f, 37.0f);
+}
+
 void Game::HandleInputs()
 {
 	float deltaTime;
@@ -68,6 +90,10 @@ void Game::HandleInputs()
 	{
 		m_SpaceShip.setRotation(currentRotation + 5.0f * (velocity / (2 * PI)) * deltaTime);
 	}
+	if (IsKeyPressed(KEY_SPACE))
+	{
+		MakeBullets();
+	}
 
 	m_SpaceShip.setPos(newPos);
 }
@@ -91,9 +117,35 @@ void Game::ChaseSpaceShip(Sprite& sprite, float VelocityFactor)
 	sprite.setPos(newPos);
 }
 
+void Game::UpdateBullets()
+{
+	float deltaTime = GetFrameTime();
+	Rectangle viewRect = GetViewRect(PlayerCam, float(SCREEN_WIDTH), float(SCREEN_HEIGHT));
+
+	for (size_t i = 0; i < m_Bullets.size();)
+	{
+		Sprite& bullet = m_Bullets[i];
+
+		Vector2 direction = Vector2Rotate({ 0.0f, -1.0f }, bullet.getRotation());
+		Vector2 newPos = bullet.getPos() + Vector2Scale(direction, bullet.getVelocity() * deltaTime);
+		bullet.setPos(newPos);
+
+		if (newPos.x > 500000 or newPos.y > 500000)
+		{
+			m_Bullets.erase(m_Bullets.begin() + i);
+		}
+		else
+		{
+			++i;
+		}
+	}
+}
+
 void Game::GameUpdate()
 {
 	HandleInputs();
+
+	UpdateBullets();
 
 	ChaseSpaceShip(m_HeavyRock, 0.6f);
 	ChaseSpaceShip(m_LightRock, 0.8f);
@@ -101,7 +153,7 @@ void Game::GameUpdate()
 	PlayerCam = { {(float)SCREEN_WIDTH / 2, (float)SCREEN_HEIGHT / 2}, m_SpaceShip.getPos(), 0.0f, 1.0f };
 }
 
-static Rectangle GetViewRect(Camera2D camera, float ScreenWidth, float ScreenHeight)
+Rectangle Game::GetViewRect(Camera2D camera, float ScreenWidth, float ScreenHeight)
 {
 	Rectangle viewRect;
 
@@ -139,6 +191,11 @@ void Game::GameRender() const
 {
 	Rectangle viewRect = GetViewRect(PlayerCam, SCREEN_WIDTH, SCREEN_HEIGHT);
 	RenderBG(viewRect, BackgroundTexture);
+
+	for (const auto& bullet : m_Bullets)
+	{
+		Renderer::RenderSprite(bullet);
+	}
 
 	Renderer::RenderSprite(m_HeavyRock);
 	Renderer::RenderSprite(m_LightRock);

@@ -23,11 +23,17 @@ private:
 	Sprite m_SpaceShip;
 	Sprite m_HeavyRock;
 	Sprite m_LightRock;
+	std::vector<Sprite> m_Bullets;
 
 	Camera2D PlayerCam;
 
+	static Rectangle GetViewRect(Camera2D camera, float ScreenWidth, float ScreenHeight);
+
 	void HandleInputs();
 	void ChaseSpaceShip(Sprite& sprite, float VelocityFactor);
+
+	void MakeBullets();
+	void UpdateBullets();
 
 	void GameStartup();
 	void GameUpdate();

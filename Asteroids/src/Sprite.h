@@ -10,8 +10,6 @@ public:
 	~Sprite();
 
 	Sprite() = delete;
-	Sprite(const Sprite& other) = delete;
-	Sprite& operator=(const Sprite& other) = delete;
 
 	void setPos(Vector2 Pos);
 	void setVelocity(float Velocity);
