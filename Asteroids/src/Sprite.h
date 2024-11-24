@@ -25,6 +25,8 @@ public:
 	float getRotation() const;
 	const Texture2D& getTexture() const;
 
+	bool isHit(Sprite& sprite);
+
 private:
 	Vector2 m_SpritePos;
 	float m_SpriteVelocity;

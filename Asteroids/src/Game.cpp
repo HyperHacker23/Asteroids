@@ -117,30 +117,30 @@ void Game::ChaseSpaceShip(Sprite& sprite, float VelocityFactor)
 void Game::UpdateBullets()
 {
 	float deltaTime = GetFrameTime();
-	Rectangle viewRect = GetViewRect(PlayerCam, float(SCREEN_WIDTH), float(SCREEN_HEIGHT));
+	Vector2 newPos;
+	float currentRotation;
+	float velocity;
+	float radians;
 
-	for (size_t i = 0; i < m_Bullets.size();)
+	for (size_t i = m_Bullets.size(); i-- > 0;)
 	{
 		Sprite& bullet = m_Bullets[i];
 
-		Vector2 newPos = bullet.getPos();
-		float currentRotation = bullet.getRotation();
-		float velocity = bullet.getVelocity();
-		float radians = DEG2RAD * currentRotation;
+		newPos = bullet.getPos();
+		currentRotation = bullet.getRotation();
+		velocity = bullet.getVelocity();
+		radians = DEG2RAD * currentRotation;
 
 		newPos.x += sinf(radians) * velocity * 3 * deltaTime;
 		newPos.y -= cosf(radians) * velocity * 3 * deltaTime;
 
 		bullet.setPos(newPos);
 
-		if (Vector2Distance(bullet.getPos(), m_SpaceShip.getPos()) > 5000)
+		if (Vector2Distance(bullet.getPos(), m_SpaceShip.getPos()) > 5000 or
+			bullet.isHit(m_HeavyRock) or bullet.isHit(m_LightRock))
 		{
-			m_Bullets.erase(m_Bullets.begin() + i);
 			UnloadTexture(bullet.getTexture());
-		}
-		else
-		{
-			++i;
+			m_Bullets.erase(m_Bullets.begin() + i);
 		}
 	}
 }

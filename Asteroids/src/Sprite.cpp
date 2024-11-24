@@ -1,5 +1,10 @@
 #include "Sprite.h"
 
+#include <raylib.h>
+#include <raymath.h>
+
+#include <iostream>
+
 Sprite::Sprite(int Health)
 	:m_SpritePos{ 0.0f, 0.0f },
 	m_SpriteVelocity{ 500.0f },
@@ -78,4 +83,17 @@ float Sprite::getRotation() const
 const Texture2D& Sprite::getTexture() const
 {
 	return m_SpriteTexture;
+}
+
+bool Sprite::isHit(Sprite& sprite)
+{
+	float radius = std::min(this->getRect().width, this->getRect().height) / 2.0f;
+	float otherRadius = std::min(sprite.getRect().width, sprite.getRect().height) / 2.0f;
+
+	Vector2 thisCenter = this->getPos();
+	Vector2 otherCenter = sprite.getPos();
+
+	float distance = Vector2Distance(thisCenter, otherCenter);
+
+	return (distance <= (radius + otherRadius));
 }
