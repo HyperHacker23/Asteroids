@@ -51,11 +51,9 @@ void Game::MakeBullets()
 
 	float bulletSpeed = m_SpaceShip.getVelocity() * 2.0f;
 
-	// Set bullet properties
 	bullet.setTexture("res/laser.png");
 	bullet.setPos(spaceshipPos + Vector2Scale(bulletDirection, 20.0f));
 	bullet.setRotation(spaceshipRotation);
-	bullet.setVelocity(bulletSpeed);
 
 	bullet.setRect(0.0f, 0.0f, 13.0f, 37.0f);
 }
@@ -126,7 +124,11 @@ void Game::UpdateBullets()
 	{
 		Sprite& bullet = m_Bullets[i];
 
-		Vector2 direction = Vector2Rotate({ 0.0f, -1.0f }, bullet.getRotation());
+		Vector2 direction = {
+			sinf(DEG2RAD * bullet.getRotation()),
+			-cosf(DEG2RAD * bullet.getRotation())
+		};
+
 		Vector2 newPos = bullet.getPos() + Vector2Scale(direction, bullet.getVelocity() * deltaTime);
 		bullet.setPos(newPos);
 
