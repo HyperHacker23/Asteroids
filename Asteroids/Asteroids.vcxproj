@@ -110,9 +110,9 @@
       </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\raylib-5.5_win64_msvc16\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;gdi32.lib;winmm.lib;user32.lib;kernel32.lib;shell32.lib
-</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>MSVCRT.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>raylibdll.lib;</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
       <EntryPointSymbol>
       </EntryPointSymbol>
     </Link>
@@ -134,9 +134,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\raylib-5.5_win64_msvc16\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;gdi32.lib;winmm.lib;user32.lib;kernel32.lib;shell32.lib
-</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>MSVCRT.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>raylibdll.lib;</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
       <EntryPointSymbol>
       </EntryPointSymbol>
     </Link>
@@ -155,9 +155,9 @@
       </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\raylib-5.5_win64_msvc16\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;gdi32.lib;winmm.lib;user32.lib;kernel32.lib;shell32.lib
-</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>MSVCRT.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>raylibdll.lib;</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
       <EntryPointSymbol>
       </EntryPointSymbol>
     </Link>
@@ -171,6 +171,7 @@
       <PreprocessorDefinitions>RAYLIB_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)dependencies\raylib-5.5_win64_msvc16\include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -179,9 +180,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\raylib-5.5_win64_msvc16\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;gdi32.lib;winmm.lib;user32.lib;kernel32.lib;shell32.lib
-</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>MSVCRT.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>raylibdll.lib;</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
       <EntryPointSymbol>
       </EntryPointSymbol>
     </Link>
