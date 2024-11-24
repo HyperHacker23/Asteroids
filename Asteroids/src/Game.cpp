@@ -88,7 +88,7 @@ void Game::HandleInputs()
 	{
 		m_SpaceShip.setRotation(currentRotation + 5.0f * (velocity / (2 * PI)) * deltaTime);
 	}
-	if (IsKeyPressed(KEY_SPACE))
+	if (IsKeyDown(KEY_SPACE))
 	{
 		MakeBullets();
 	}
@@ -132,9 +132,10 @@ void Game::UpdateBullets()
 		Vector2 newPos = bullet.getPos() + Vector2Scale(direction, bullet.getVelocity() * deltaTime);
 		bullet.setPos(newPos);
 
-		if (newPos.x > 500000 or newPos.y > 500000)
+		if (!CheckCollisionPointRec(newPos, viewRect))
 		{
 			m_Bullets.erase(m_Bullets.begin() + i);
+			UnloadTexture(bullet.getTexture());
 		}
 		else
 		{
