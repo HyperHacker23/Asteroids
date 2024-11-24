@@ -43,6 +43,8 @@ void Game::HandleInputs()
 	float deltaTime;
 	deltaTime = GetFrameTime();
 
+	constexpr float ROTATION_SPEED = 5.0f;
+
 	Vector2 newPos = m_SpaceShip.getPos();
 
 	float currentRotation = m_SpaceShip.getRotation();
@@ -62,11 +64,11 @@ void Game::HandleInputs()
 	}
 	if (IsKeyDown(KEY_A))
 	{
-		m_SpaceShip.setRotation(currentRotation - 5.0f * (velocity / (2 * PI)) * deltaTime);
+		m_SpaceShip.setRotation(currentRotation - ROTATION_SPEED * (velocity / (2 * PI)) * deltaTime);
 	}
 	if (IsKeyDown(KEY_D))
 	{
-		m_SpaceShip.setRotation(currentRotation + 5.0f * (velocity / (2 * PI)) * deltaTime);
+		m_SpaceShip.setRotation(currentRotation + ROTATION_SPEED * (velocity / (2 * PI)) * deltaTime);
 	}
 
 	m_SpaceShip.setPos(newPos);
