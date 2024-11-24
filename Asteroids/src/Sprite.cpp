@@ -50,16 +50,6 @@ void Sprite::setTexture(const char* path)
 	m_SpriteTexture = LoadTexture(path);
 }
 
-void Sprite::setTexture(Texture2D& texture)
-{
-	if (m_SpriteTexture.id != 0)
-	{
-		UnloadTexture(m_SpriteTexture);
-	}
-
-	m_SpriteTexture = texture;
-}
-
 const Vector2& Sprite::getPos() const
 {
 	return m_SpritePos;

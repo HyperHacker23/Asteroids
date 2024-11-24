@@ -5,7 +5,6 @@
 
 Game::Game()
 	:BackgroundTexture{ NULL },
-	BulletTexture{ NULL },
 	m_SpaceShip(100),
 	m_HeavyRock(200),
 	m_LightRock(75),
@@ -52,7 +51,7 @@ void Game::MakeBullets()
 
 	float bulletSpeed = m_SpaceShip.getVelocity() * 2.0f;
 
-	bullet.setTexture(BulletTexture);
+	bullet.setTexture("res/laser.png");
 	bullet.setPos(spaceshipPos + Vector2Scale(bulletDirection, 20.0f));
 	bullet.setRotation(spaceshipRotation);
 
