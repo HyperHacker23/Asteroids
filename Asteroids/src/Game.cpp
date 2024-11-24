@@ -49,7 +49,7 @@ void Game::MakeBullets()
 
 	Vector2 bulletDirection = Vector2Rotate({ 0.0f, -1.0f }, spaceshipRotation * DEG2RAD);
 
-	float bulletSpeed = m_SpaceShip.getVelocity() * 2.0f;
+	float bulletSpeed = 2000.0f;
 
 	bullet.setTexture("res/laser.png");
 	bullet.setPos(spaceshipPos + Vector2Scale(bulletDirection, 20.0f));
@@ -123,15 +123,17 @@ void Game::UpdateBullets()
 	{
 		Sprite& bullet = m_Bullets[i];
 
-		Vector2 direction = {
-			sinf(DEG2RAD * bullet.getRotation()),
-			-cosf(DEG2RAD * bullet.getRotation())
-		};
+		Vector2 newPos = bullet.getPos();
+		float currentRotation = bullet.getRotation();
+		float velocity = bullet.getVelocity();
+		float radians = DEG2RAD * currentRotation;
 
-		Vector2 newPos = bullet.getPos() + Vector2Scale(direction, bullet.getVelocity() * deltaTime);
+		newPos.x += sinf(radians) * velocity * 3 * deltaTime;
+		newPos.y -= cosf(radians) * velocity * 3 * deltaTime;
+
 		bullet.setPos(newPos);
 
-		if (!CheckCollisionPointRec(newPos, viewRect))
+		if (Vector2Distance(bullet.getPos(), m_SpaceShip.getPos()) > 5000)
 		{
 			m_Bullets.erase(m_Bullets.begin() + i);
 			UnloadTexture(bullet.getTexture());
