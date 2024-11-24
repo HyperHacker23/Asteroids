@@ -4,6 +4,7 @@
 #include "Renderer.h"
 
 #include <iostream>
+#include <vector>
 
 class Game
 {
@@ -22,6 +23,8 @@ private:
 	Sprite m_SpaceShip;
 	Sprite m_HeavyRock;
 	Sprite m_LightRock;
+
+	
 
 	Camera2D PlayerCam;
 

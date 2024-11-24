@@ -8,6 +8,7 @@ Game::Game()
 	m_SpaceShip(100),
 	m_HeavyRock(200),
 	m_LightRock(75),
+	m_Bullets{ NULL },
 	PlayerCam{ {0.0f, 0.0f}, {0.0f,0.0f}, 0.0f, 0.0f }
 {
 
