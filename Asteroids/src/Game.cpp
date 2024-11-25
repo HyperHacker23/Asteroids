@@ -141,6 +141,8 @@ void Game::UpdateBullets()
 		{
 			UnloadTexture(bullet.getTexture());
 			m_Bullets.erase(m_Bullets.begin() + i);
+
+			continue;
 		}
 	}
 }
